@@ -1,8 +1,11 @@
 package com.example.meualmoxarifadobackend.service;
 
+import com.example.meualmoxarifadobackend.controller.dto.request.AcertoEstoqueDTO;
 import com.example.meualmoxarifadobackend.domain.model.*;
 
 public interface MovimentacaoFactory {
+
+    Movimentacao criarMovimentacaoAcertoEstoque(AcertoEstoqueDTO acerto);
 
     Movimentacao criarMovimentacaoEntrada(ItemDeCompra itemDeCompra, NfeDeCompra nfe, String justificativa);
 

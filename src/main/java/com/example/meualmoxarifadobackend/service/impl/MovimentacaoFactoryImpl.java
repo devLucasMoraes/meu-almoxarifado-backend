@@ -1,10 +1,12 @@
 package com.example.meualmoxarifadobackend.service.impl;
 
+import com.example.meualmoxarifadobackend.controller.dto.request.AcertoEstoqueDTO;
 import com.example.meualmoxarifadobackend.domain.model.*;
 import com.example.meualmoxarifadobackend.service.ConversaoDeCompraService;
 import com.example.meualmoxarifadobackend.service.ConversaoDeConsumoService;
 import com.example.meualmoxarifadobackend.service.MaterialService;
 import com.example.meualmoxarifadobackend.service.MovimentacaoFactory;
+import com.example.meualmoxarifadobackend.service.exception.BusinessException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -24,6 +26,35 @@ public class MovimentacaoFactoryImpl implements MovimentacaoFactory {
         this.materialService = materialService;
         this.conversaoDeCompraService = conversaoDeCompraService;
         this.conversaoDeConsumoService = conversaoDeConsumoService;
+    }
+
+    public Movimentacao criarMovimentacaoAcertoEstoque(AcertoEstoqueDTO baseItem) {
+        Material dbMaterial = this.materialService.findById(baseItem.idMaterial());
+
+        BigDecimal valorTotal = getValorTotal(baseItem, dbMaterial);
+
+        BigDecimal valorUnitario = dbMaterial.getValorUntMed();
+
+        int compare = dbMaterial.getQtdEmEstoqueFisico().compareTo(baseItem.quantidade());
+
+        if (compare == 0) {
+            throw new BusinessException("sem alteração");
+        }
+
+        if (compare > 0) {
+            Movimentacao saida = criarMovimentacaoBase(dbMaterial, Tipo.SAIDA,
+                    baseItem.quantidade(), valorUnitario,
+                    valorTotal, baseItem.justificativa());
+
+            return saida;
+        }
+
+        Movimentacao entrada = criarMovimentacaoBase(dbMaterial, Tipo.ENTRADA,
+                baseItem.quantidade(), valorUnitario,
+                valorTotal, baseItem.justificativa());
+
+        return entrada;
+
     }
 
     public Movimentacao criarMovimentacaoEntrada(ItemDeCompra itemDeCompra, NfeDeCompra nfe, String justificativa) {
@@ -147,6 +178,10 @@ public class MovimentacaoFactoryImpl implements MovimentacaoFactory {
 
     private BigDecimal getValorTotal(BaseItem item, Material dbMaterial) {
         return dbMaterial.getValorUntMed().multiply(item.getQuantidade());
+    }
+
+    private BigDecimal getValorTotal(AcertoEstoqueDTO item, Material dbMaterial) {
+        return dbMaterial.getValorUntMed().multiply(item.quantidade());
     }
 
     private BigDecimal getValorUnitario(BigDecimal valorTotal, BigDecimal qtd) {

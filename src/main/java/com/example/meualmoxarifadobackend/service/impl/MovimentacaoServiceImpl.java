@@ -2,9 +2,11 @@ package com.example.meualmoxarifadobackend.service.impl;
 
 import com.example.meualmoxarifadobackend.domain.model.Material;
 import com.example.meualmoxarifadobackend.domain.model.Movimentacao;
+import com.example.meualmoxarifadobackend.domain.model.Tipo;
 import com.example.meualmoxarifadobackend.domain.repository.MovimentacaoRepository;
 import com.example.meualmoxarifadobackend.service.MaterialService;
 import com.example.meualmoxarifadobackend.service.MovimentacaoService;
+import com.example.meualmoxarifadobackend.service.exception.BusinessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,10 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
     @Transactional
     public void registrarEntradaAoEstoqueFisico(Movimentacao entrada) {
+        if(entrada.getTipo() != Tipo.ENTRADA) {
+            throw new BusinessException("Erro ao registar entrada ao estoque");
+        }
+
         Material dbMaterial = this.materialService.findById(entrada.getMaterial().getId());
 
         BigDecimal qtdEmEstoque = dbMaterial.getQtdEmEstoqueFisico();
@@ -47,6 +53,10 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
     @Transactional
     public void registrarSaidaDoEstoqueFisico(Movimentacao saida) {
+        if(saida.getTipo() != Tipo.SAIDA) {
+            throw new BusinessException("Erro ao registar saida ao estoque");
+        }
+
         Material dbMaterial = this.materialService.findById(saida.getMaterial().getId());
         BigDecimal qtdEmEstoque = dbMaterial.getQtdEmEstoqueFisico();
         dbMaterial.setQtdEmEstoqueFisico(qtdEmEstoque.subtract(saida.getQuantidade()));

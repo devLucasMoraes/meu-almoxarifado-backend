@@ -1,5 +1,6 @@
 package com.example.meualmoxarifadobackend.service.impl;
 
+import com.example.meualmoxarifadobackend.controller.dto.request.AcertoEstoqueDTO;
 import com.example.meualmoxarifadobackend.domain.model.Material;
 import com.example.meualmoxarifadobackend.domain.repository.MaterialRepository;
 import com.example.meualmoxarifadobackend.service.CategoriaService;
@@ -94,6 +95,14 @@ public class MaterialServiceImpl implements MaterialService {
         dbMaterial.setCategoria(materialToUpdate.getCategoria());
 
         return this.materialRepository.save(dbMaterial);
+    }
+
+    @Transactional
+    public void acertarEstoque(AcertoEstoqueDTO acerto) {
+        Material dbMaterial = this.findById(acerto.idMaterial());
+
+        dbMaterial.setQtdEmEstoqueFisico(acerto.quantidade());
+
     }
 
     @Transactional

@@ -1,8 +1,10 @@
 package com.example.meualmoxarifadobackend.controller;
 
 
+import com.example.meualmoxarifadobackend.controller.dto.request.AcertoEstoqueDTO;
 import com.example.meualmoxarifadobackend.controller.dto.request.MaterialDTO;
 import com.example.meualmoxarifadobackend.controller.dto.response.AutoCompleteDTO;
+import com.example.meualmoxarifadobackend.controller.dto.response.ShowEstoqueDTO;
 import com.example.meualmoxarifadobackend.controller.dto.response.ShowMaterialDTO;
 import com.example.meualmoxarifadobackend.controller.filter.MaterialSearchFilter;
 import com.example.meualmoxarifadobackend.service.MaterialService;
@@ -35,6 +37,19 @@ public record MaterialController(MaterialService materialService) {
         var materiais = materialService.findAll(pageable);
         var materiaisDTO = materiais.map(ShowMaterialDTO::new);
         return ResponseEntity.ok(materiaisDTO);
+    }
+
+    @GetMapping("estoque")
+    public ResponseEntity<Page<ShowEstoqueDTO>> getEstoque(Pageable pageable) {
+        var materiais = materialService.findAll(pageable);
+        var materiaisDTO = materiais.map(ShowEstoqueDTO::new);
+        return ResponseEntity.ok(materiaisDTO);
+    }
+
+    @PatchMapping("estoque/acerto")
+    public  ResponseEntity<Void> acertoEstoque(@RequestBody @Valid AcertoEstoqueDTO acertoEstoqueDTO) {
+        materialService.acertarEstoque(acertoEstoqueDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("query")
