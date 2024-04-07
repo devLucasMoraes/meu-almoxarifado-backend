@@ -4,12 +4,14 @@ import com.example.meualmoxarifadobackend.controller.dto.request.*;
 import com.example.meualmoxarifadobackend.domain.model.Unidade;
 import com.example.meualmoxarifadobackend.service.*;
 import jakarta.annotation.PostConstruct;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 @Component
+@Profile("dev")
 public class PopulaDadosIniciais {
 
     private final CategoriaService categoriaService;
