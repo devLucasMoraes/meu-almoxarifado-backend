@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>meu-almoxarifado-backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>meu-almoxarifado-backend</name>
 	<description>Este projeto consiste em uma API REST desenvolvida com o framework Spring Boot para realizar o controle e gerenciamento de estoque e almoxarifado.</description>
 	<properties>

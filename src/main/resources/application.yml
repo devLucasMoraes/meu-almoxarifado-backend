@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: meu-almoxarifado-backend
+  profiles:
+    active: prod
