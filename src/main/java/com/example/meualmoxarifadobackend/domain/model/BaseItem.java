@@ -15,15 +15,15 @@ public class BaseItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "materiais_id")
-    private Material material;
+    @JoinColumn(name = "insumos_id")
+    private Insumo insumo;
+
+    @JoinColumn(name = "quantidade")
+    private BigDecimal quantidade;
 
     @Enumerated(EnumType.STRING)
     @JoinColumn(name = "unidade")
     private Unidade unidade;
-
-    @JoinColumn(name = "quantidade")
-    private BigDecimal quantidade;
 
     @JoinColumn(name = "valor_unitario")
     private BigDecimal valorUnitario = BigDecimal.ZERO;

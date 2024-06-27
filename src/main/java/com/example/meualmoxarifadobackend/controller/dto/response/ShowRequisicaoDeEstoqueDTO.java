@@ -1,6 +1,6 @@
 package com.example.meualmoxarifadobackend.controller.dto.response;
 
-import com.example.meualmoxarifadobackend.domain.model.RequisicaoDeEstoque;
+import com.example.meualmoxarifadobackend.domain.model.RequisicaoEstoque;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,8 +18,8 @@ public record ShowRequisicaoDeEstoqueDTO(
         String ordemProducao,
         Long idRequisitante,
         Long idLocalDeAplicacao,
-        List<ShowItemRequisicaoDTO> itens) {
-    public ShowRequisicaoDeEstoqueDTO(RequisicaoDeEstoque model) {
+        List<ShowRequisicaoEstoqueItemDTO> itens) {
+    public ShowRequisicaoDeEstoqueDTO(RequisicaoEstoque model) {
         this(
                 model.getId(),
                 model.getDataRequisicao(),
@@ -27,8 +27,8 @@ public record ShowRequisicaoDeEstoqueDTO(
                 model.getOrdemProducao(),
                 model.getObs(),
                 model.getRequisitante().getId(),
-                model.getLocalDeAplicacao().getId(),
-                ofNullable(model.getItens()).orElse(emptyList()).stream().map(ShowItemRequisicaoDTO::new).collect(toList())
+                model.getEquipamento().getId(),
+                ofNullable(model.getItens()).orElse(emptyList()).stream().map(ShowRequisicaoEstoqueItemDTO::new).collect(toList())
         );
     }
 

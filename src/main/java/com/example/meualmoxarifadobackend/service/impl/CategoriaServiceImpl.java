@@ -46,9 +46,6 @@ public class CategoriaServiceImpl implements CategoriaService {
             throw new BusinessException("Categoria com mesmo nome já cadastrada");
         }
 
-        if(!categoriaToCreate.getConversoesDeConsumo().isEmpty()){
-            categoriaToCreate.getConversoesDeConsumo().forEach(conversao -> conversao.setCategoria(categoriaToCreate));
-        }
 
         return this.categoriaRepository.save(categoriaToCreate);
     }
@@ -61,15 +58,8 @@ public class CategoriaServiceImpl implements CategoriaService {
             throw new BusinessException("Os IDs de atualização devem ser iguais.");
         }
 
-        if(!categoriaToUpdate.getConversoesDeConsumo().isEmpty()){
-            categoriaToUpdate.getConversoesDeConsumo().forEach(conversao -> conversao.setCategoria(dbCategoria));
-        }
 
         dbCategoria.setNome(categoriaToUpdate.getNome());
-        dbCategoria.setUndEstoque(categoriaToUpdate.getUndEstoque());
-        dbCategoria.setEstoqueMinimo(categoriaToUpdate.getEstoqueMinimo());
-        dbCategoria.getConversoesDeConsumo().clear();
-        dbCategoria.getConversoesDeConsumo().addAll(categoriaToUpdate.getConversoesDeConsumo());
 
         return this.categoriaRepository.save(dbCategoria);
     }

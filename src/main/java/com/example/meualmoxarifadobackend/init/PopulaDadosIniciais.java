@@ -1,14 +1,16 @@
 package com.example.meualmoxarifadobackend.init;
 
-import com.example.meualmoxarifadobackend.controller.dto.request.*;
-import com.example.meualmoxarifadobackend.domain.model.Unidade;
-import com.example.meualmoxarifadobackend.service.*;
+import com.example.meualmoxarifadobackend.controller.dto.request.CategoriaDTO;
+import com.example.meualmoxarifadobackend.controller.dto.request.EquipamentoDTO;
+import com.example.meualmoxarifadobackend.controller.dto.request.InsumoDTO;
+import com.example.meualmoxarifadobackend.controller.dto.request.RequisitanteDTO;
+import com.example.meualmoxarifadobackend.service.CategoriaService;
+import com.example.meualmoxarifadobackend.service.EquipamentoService;
+import com.example.meualmoxarifadobackend.service.InsumoService;
+import com.example.meualmoxarifadobackend.service.RequisitanteService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
 
 @Component
 @Profile("dev")
@@ -16,106 +18,63 @@ public class PopulaDadosIniciais {
 
     private final CategoriaService categoriaService;
 
-    private final MaterialService materialService;
-
-    private final FornecedoraService fornecedoraService;
-
-    private final TransportadoraService transportadoraService;
+    private final InsumoService insumoService;
 
     private final RequisitanteService requisitanteService;
 
-    private final LocalDeAplicacaoService localDeAplicacaoService;
+    private final EquipamentoService equipamentoService;
 
-    public PopulaDadosIniciais(CategoriaService categoriaService, MaterialService materialService, FornecedoraService fornecedoraService, TransportadoraService transportadoraService, RequisitanteService requisitanteService, LocalDeAplicacaoService localDeAplicacaoService) {
+    public PopulaDadosIniciais(CategoriaService categoriaService, InsumoService insumoService, RequisitanteService requisitanteService, EquipamentoService equipamentoService) {
         this.categoriaService = categoriaService;
-        this.materialService = materialService;
-        this.fornecedoraService = fornecedoraService;
-        this.transportadoraService = transportadoraService;
+        this.insumoService = insumoService;
         this.requisitanteService = requisitanteService;
-        this.localDeAplicacaoService = localDeAplicacaoService;
+        this.equipamentoService = equipamentoService;
     }
 
     @PostConstruct
     public void populaDadosIniciais(){
         CategoriaDTO alcoois = new CategoriaDTO(
                 null,
-                "ALCOOIS",
-                Unidade.LITRO,
-                new BigDecimal(150),
-                new ArrayList<>()
+                "ALCOOIS"
         );
         CategoriaDTO papelaoParana = new CategoriaDTO(
                 null,
-                "PAPELAO PARANA",
-                Unidade.UNID,
-                new BigDecimal(150),
-                new ArrayList<>()
+                "PAPELAO PARANA"
         );
 
         CategoriaDTO vernizes = new CategoriaDTO(
                 null,
-                "VERNIZES",
-                Unidade.KG,
-                new BigDecimal(50),
-                new ArrayList<>()
+                "VERNIZES"
         );
 
-        MaterialDTO vernizUv = new MaterialDTO(
+        InsumoDTO vernizUv = new InsumoDTO(
                 null,
                 "VERNIZ UV-8010/11 CALANDRA BRILHO",
                 true,
                 null,
-                3L,
-                new ArrayList<>()
+                3L
         );
 
-        MaterialDTO ipa7030 = new MaterialDTO(
+        InsumoDTO ipa7030 = new InsumoDTO(
                 null,
                 "IPA 70/30",
                 true,
                 null,
-                1L,
-                new ArrayList<>()
+                1L
         );
-        MaterialDTO ipa100 = new MaterialDTO(
+        InsumoDTO ipa100 = new InsumoDTO(
                 null,
                 "IPA 100",
                 true,
                 null,
-                1L,
-                new ArrayList<>()
+                1L
         );
-        MaterialDTO papelao08100015 = new MaterialDTO(
+        InsumoDTO papelao08100015 = new InsumoDTO(
                 null,
                 "PAPELAO 800 x 1000mm 1.5mm",
                 true,
                 null,
-                2L,
-                new ArrayList<>()
-        );
-
-        FornecedoraDTO canopusQuimica = new FornecedoraDTO(
-                null,
-                "68958487000153",
-                "CANOPUS IND E COM DE PRODUTOS",
-                "CANOPUS QUIMICA",
-                "11 4093-8300"
-        );
-
-        FornecedoraDTO eurustar = new FornecedoraDTO(
-                null,
-                "28859855000191",
-                "EUROSTAR LTDA",
-                "EUROSTAR",
-                "11 4093-8300"
-        );
-
-        TransportadoraDTO transportadoraDTO = new TransportadoraDTO(
-                null,
-                "35.653.525.0001-00",
-                "ADRIANA DIMITROV TRANSPORTES - ME",
-                "SORA TRANSPORTES",
-                "11 4063-8826"
+                2L
         );
 
         RequisitanteDTO requisitanteDTO = new RequisitanteDTO(
@@ -124,22 +83,19 @@ public class PopulaDadosIniciais {
                 "(xx)x xxxx-xxxx"
         );
 
-        LocalDeAplicacaoDTO localDeAplicacaoDTO = new LocalDeAplicacaoDTO(
+        EquipamentoDTO localDeAplicacaoDTO = new EquipamentoDTO(
                 null,
                 "SM102"
         );
 
-        fornecedoraService.create(eurustar.toModel());
-        fornecedoraService.create(canopusQuimica.toModel());
-        transportadoraService.create(transportadoraDTO.toModel());
         categoriaService.create(alcoois.toModel());
         categoriaService.create(papelaoParana.toModel());
         categoriaService.create(vernizes.toModel());
-        materialService.create(ipa7030.toModel());
-        materialService.create(ipa100.toModel());
-        materialService.create(vernizUv.toModel());
-        materialService.create(papelao08100015.toModel());
+        insumoService.create(ipa7030.toModel());
+        insumoService.create(ipa100.toModel());
+        insumoService.create(vernizUv.toModel());
+        insumoService.create(papelao08100015.toModel());
         requisitanteService.create(requisitanteDTO.toNewModel());
-        localDeAplicacaoService.create(localDeAplicacaoDTO.toNewModel());
+        equipamentoService.create(localDeAplicacaoDTO.toNewModel());
     }
 }

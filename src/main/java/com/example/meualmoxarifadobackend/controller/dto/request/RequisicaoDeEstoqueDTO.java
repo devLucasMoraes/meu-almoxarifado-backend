@@ -1,7 +1,7 @@
 package com.example.meualmoxarifadobackend.controller.dto.request;
 
-import com.example.meualmoxarifadobackend.domain.model.LocalDeAplicacao;
-import com.example.meualmoxarifadobackend.domain.model.RequisicaoDeEstoque;
+import com.example.meualmoxarifadobackend.domain.model.Equipamento;
+import com.example.meualmoxarifadobackend.domain.model.RequisicaoEstoque;
 import com.example.meualmoxarifadobackend.domain.model.Requisitante;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.Valid;
@@ -28,31 +28,31 @@ public record RequisicaoDeEstoqueDTO(
         @Valid
         @NotNull
         @NotEmpty
-        List<ItemRequisicaoDTO> itens) {
-    public RequisicaoDeEstoque toModel() {
-        RequisicaoDeEstoque model = new RequisicaoDeEstoque();
+        List<RequisicaoEstoqueItemDTO> itens) {
+    public RequisicaoEstoque toModel() {
+        RequisicaoEstoque model = new RequisicaoEstoque();
         model.setId(this.id);
         model.setDataRequisicao(this.dataRequisicao);
         model.setObs(this.obs);
         model.setOrdemProducao(this.ordemProducao);
-        model.setLocalDeAplicacao(new LocalDeAplicacao(this.idLocalDeAplicacao));
+        model.setEquipamento(new Equipamento(this.idLocalDeAplicacao));
         model.setRequisitante(new Requisitante(this.idRequisitante));
         model.setItens(ofNullable(this.itens)
                 .orElse(emptyList())
-                .stream().map(ItemRequisicaoDTO::toModel).collect(toList()));
+                .stream().map(RequisicaoEstoqueItemDTO::toModel).collect(toList()));
         return model;
     }
 
-    public RequisicaoDeEstoque toNewModel() {
-        RequisicaoDeEstoque model = new RequisicaoDeEstoque();
+    public RequisicaoEstoque toNewModel() {
+        RequisicaoEstoque model = new RequisicaoEstoque();
         model.setDataRequisicao(this.dataRequisicao);
         model.setObs(this.obs);
         model.setOrdemProducao(this.ordemProducao);
-        model.setLocalDeAplicacao(new LocalDeAplicacao(this.idLocalDeAplicacao));
+        model.setEquipamento(new Equipamento(this.idLocalDeAplicacao));
         model.setRequisitante(new Requisitante(this.idRequisitante));
         model.setItens(ofNullable(this.itens)
                 .orElse(emptyList())
-                .stream().map(ItemRequisicaoDTO::toNewModel).collect(toList()));
+                .stream().map(RequisicaoEstoqueItemDTO::toNewModel).collect(toList()));
         return model;
     }
 }

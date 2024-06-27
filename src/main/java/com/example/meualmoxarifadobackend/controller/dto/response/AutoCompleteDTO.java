@@ -4,7 +4,7 @@ package com.example.meualmoxarifadobackend.controller.dto.response;
 import com.example.meualmoxarifadobackend.domain.model.*;
 
 public record AutoCompleteDTO( Long id, String label ) {
-    public AutoCompleteDTO(Material model) {
+    public AutoCompleteDTO(Insumo model) {
         this(
                 model.getId(),
                 model.getDescricao()
@@ -18,21 +18,7 @@ public record AutoCompleteDTO( Long id, String label ) {
         );
     }
 
-    public AutoCompleteDTO(Fornecedora model) {
-        this(
-                model.getId(),
-                model.getNomeFantasia()
-        );
-    }
-
-    public AutoCompleteDTO(Transportadora model) {
-        this(
-                model.getId(),
-                model.getNomeFantasia()
-        );
-    }
-
-    public AutoCompleteDTO(LocalDeAplicacao model) {
+    public AutoCompleteDTO(Equipamento model) {
         this(
                 model.getId(),
                 model.getNome()

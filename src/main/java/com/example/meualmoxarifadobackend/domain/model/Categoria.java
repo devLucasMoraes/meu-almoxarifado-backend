@@ -3,8 +3,8 @@ package com.example.meualmoxarifadobackend.domain.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-import java.util.List;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "categorias")
@@ -22,17 +22,13 @@ public class Categoria {
     @JoinColumn(name = "nome")
     private String nome;
 
-    @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "und_estoque")
-    private Unidade undEstoque;
+    @JoinColumn(name = "created_at")
+    private LocalDateTime createdAt;
 
-    @JoinColumn(name = "estoque_minimo")
-    private BigDecimal estoqueMinimo;
+    @JoinColumn(name = "updated_at")
+    private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
-    private List<ConversaoDeConsumo> conversoesDeConsumo;
-
-    public Categoria(Long id) {
-        this.id = id;
+    public Categoria(Long idCategoria) {
+        this.id = idCategoria;
     }
 }
