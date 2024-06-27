@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public record EquipamentoDTO(
         Long id,
-        @NotBlank
-        String nome) {
+        @NotBlank String nome
+) {
     public Equipamento toModel() {
         Equipamento model = new Equipamento();
         model.setId(this.id);

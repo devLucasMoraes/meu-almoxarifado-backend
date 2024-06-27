@@ -5,8 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record CategoriaDTO(
         Long id,
-        @NotBlank
-        String nome
+        @NotBlank String nome
 ) {
     public Categoria toModel() {
         Categoria model = new Categoria();

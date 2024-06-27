@@ -11,6 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 public class RequisitanteServiceImpl implements RequisitanteService {
 
@@ -43,6 +45,9 @@ public class RequisitanteServiceImpl implements RequisitanteService {
             throw new BusinessException("O nome do requisitante ja existe");
         }
 
+        requisitanteToCreate.setCreatedAt(LocalDateTime.now());
+        requisitanteToCreate.setUpdatedAt(LocalDateTime.now());
+
         return this.requisitanteRepository.save(requisitanteToCreate);
     }
 
@@ -56,6 +61,7 @@ public class RequisitanteServiceImpl implements RequisitanteService {
 
         dbRequisitante.setNome(requisitanteUpdate.getNome());
         dbRequisitante.setFone(requisitanteUpdate.getFone());
+        dbRequisitante.setUpdatedAt(LocalDateTime.now());
 
         return this.requisitanteRepository.save(dbRequisitante);
     }

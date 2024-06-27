@@ -11,6 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 public class EquipamentoServiceImpl implements EquipamentoService {
 
@@ -42,6 +44,9 @@ public class EquipamentoServiceImpl implements EquipamentoService {
             throw new BusinessException("O equipamento ja existe.");
         }
 
+        equipamentoToCreate.setCreatedAt(LocalDateTime.now());
+        equipamentoToCreate.setUpdatedAt(LocalDateTime.now());
+
         return this.equipamentoRepository.save(equipamentoToCreate);
     }
 
@@ -54,7 +59,7 @@ public class EquipamentoServiceImpl implements EquipamentoService {
         }
 
         dbEquipamento.setNome(equipamentoToUpdate.getNome());
-
+        dbEquipamento.setUpdatedAt(LocalDateTime.now());
 
         return this.equipamentoRepository.save(dbEquipamento);
     }

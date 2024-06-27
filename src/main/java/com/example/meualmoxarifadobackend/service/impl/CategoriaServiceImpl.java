@@ -11,6 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 import static java.util.Optional.ofNullable;
 
 @Service
@@ -46,6 +48,9 @@ public class CategoriaServiceImpl implements CategoriaService {
             throw new BusinessException("Categoria com mesmo nome já cadastrada");
         }
 
+        categoriaToCreate.setCreatedAt(LocalDateTime.now());
+        categoriaToCreate.setUpdatedAt(LocalDateTime.now());
+
 
         return this.categoriaRepository.save(categoriaToCreate);
     }
@@ -58,8 +63,8 @@ public class CategoriaServiceImpl implements CategoriaService {
             throw new BusinessException("Os IDs de atualização devem ser iguais.");
         }
 
-
         dbCategoria.setNome(categoriaToUpdate.getNome());
+        dbCategoria.setUpdatedAt(LocalDateTime.now());
 
         return this.categoriaRepository.save(dbCategoria);
     }
