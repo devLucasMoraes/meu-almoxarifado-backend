@@ -7,6 +7,9 @@ import com.example.meualmoxarifadobackend.service.CategoriaService;
 import com.example.meualmoxarifadobackend.service.InsumoService;
 import com.example.meualmoxarifadobackend.service.exception.BusinessException;
 import com.example.meualmoxarifadobackend.service.exception.NotFoundException;
+
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -52,6 +55,8 @@ public class InsumoServiceImpl implements InsumoService {
             throw new BusinessException("Insumo com mesma descrição já cadastrada");
         }
 
+        insumoToCreate.setCreatedAt(LocalDateTime.now());
+        insumoToCreate.setUpdatedAt(LocalDateTime.now());
 
         return this.insumoRepository.save(insumoToCreate);
     }
@@ -69,7 +74,10 @@ public class InsumoServiceImpl implements InsumoService {
         if (!insumoToUpdate.getValorUntMedAuto()) {
             dbInsumo.setValorUntMed(insumoToUpdate.getValorUntMed());
         }
+        dbInsumo.setUndEstoque(insumoToUpdate.getUndEstoque());
+        dbInsumo.setEstoqueMinimo(insumoToUpdate.getEstoqueMinimo());
         dbInsumo.setCategoria(insumoToUpdate.getCategoria());
+        dbInsumo.setUpdatedAt(LocalDateTime.now());
 
         return this.insumoRepository.save(dbInsumo);
     }

@@ -28,7 +28,7 @@ public class Insumo {
     private BigDecimal valorUntMed = BigDecimal.ZERO;
 
     @JoinColumn(name = "valor_unt_med_auto")
-    private Boolean valorUntMedAuto = true;
+    private Boolean valorUntMedAuto = false;
 
     @Enumerated(EnumType.STRING)
     @JoinColumn(name = "und_estoque")
@@ -54,6 +54,6 @@ public class Insumo {
     private Categoria categoria;
 
     public Insumo(Long idInsumo) {
-        this.id = id;
+        this.id = idInsumo;
     }
 }

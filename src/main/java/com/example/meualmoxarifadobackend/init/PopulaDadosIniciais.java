@@ -4,11 +4,15 @@ import com.example.meualmoxarifadobackend.controller.dto.request.CategoriaDTO;
 import com.example.meualmoxarifadobackend.controller.dto.request.EquipamentoDTO;
 import com.example.meualmoxarifadobackend.controller.dto.request.InsumoDTO;
 import com.example.meualmoxarifadobackend.controller.dto.request.RequisitanteDTO;
+import com.example.meualmoxarifadobackend.domain.model.Unidade;
 import com.example.meualmoxarifadobackend.service.CategoriaService;
 import com.example.meualmoxarifadobackend.service.EquipamentoService;
 import com.example.meualmoxarifadobackend.service.InsumoService;
 import com.example.meualmoxarifadobackend.service.RequisitanteService;
 import jakarta.annotation.PostConstruct;
+
+import java.math.BigDecimal;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -50,30 +54,38 @@ public class PopulaDadosIniciais {
         InsumoDTO vernizUv = new InsumoDTO(
                 null,
                 "VERNIZ UV-8010/11 CALANDRA BRILHO",
-                true,
-                null,
+                new BigDecimal(0),
+                false,
+                Unidade.KG,
+                new BigDecimal(30),
                 3L
         );
 
         InsumoDTO ipa7030 = new InsumoDTO(
                 null,
                 "IPA 70/30",
-                true,
-                null,
+                new BigDecimal(0),
+                false,
+                Unidade.LITRO,
+                new BigDecimal(150),
                 1L
         );
         InsumoDTO ipa100 = new InsumoDTO(
                 null,
                 "IPA 100",
-                true,
-                null,
+                new BigDecimal(0),
+                false,
+                Unidade.LITRO,
+                new BigDecimal(150),
                 1L
         );
         InsumoDTO papelao08100015 = new InsumoDTO(
                 null,
                 "PAPELAO 800 x 1000mm 1.5mm",
-                true,
-                null,
+                new BigDecimal(0),
+                false,
+                Unidade.FOLHA,
+                new BigDecimal(100),
                 2L
         );
 

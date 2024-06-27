@@ -1,0 +1,25 @@
+### Create insumo
+
+POST http://localhost:8081/api/insumos/create HTTP/1.1
+Content-Type: application/json
+
+{
+    "descricao": "teste",
+    "valorUntMed": 0,
+    "valorUntMedAuto": false,
+    "undEstoque": "LITRO",
+    "estoqueMinimo": 100,
+    "idCategoria": 1
+}
+
+
+### Get insumos
+
+GET http://localhost:8081/api/insumos HTTP/1.1
+
+
+### Get insumo
+
+GET http://localhost:8081/api/insumos/show/4 HTTP/1.1
+
+
