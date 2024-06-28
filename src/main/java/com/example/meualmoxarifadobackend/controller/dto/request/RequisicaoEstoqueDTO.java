@@ -15,27 +15,22 @@ import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 
-public record RequisicaoDeEstoqueDTO(
+public record RequisicaoEstoqueDTO(
         Long id,
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale = "pt_BR")
-        LocalDateTime dataRequisicao,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale = "pt_BR") LocalDateTime dataRequisicao,
         String obs,
         String ordemProducao,
-        @NotNull
-        Long idRequisitante,
-        @NotNull
-        Long idLocalDeAplicacao,
-        @Valid
-        @NotNull
-        @NotEmpty
-        List<RequisicaoEstoqueItemDTO> itens) {
+        @NotNull Long idRequisitante,
+        @NotNull Long idEquipamento,
+        @Valid @NotNull @NotEmpty List<RequisicaoEstoqueItemDTO> itens
+) {
     public RequisicaoEstoque toModel() {
         RequisicaoEstoque model = new RequisicaoEstoque();
         model.setId(this.id);
         model.setDataRequisicao(this.dataRequisicao);
         model.setObs(this.obs);
         model.setOrdemProducao(this.ordemProducao);
-        model.setEquipamento(new Equipamento(this.idLocalDeAplicacao));
+        model.setEquipamento(new Equipamento(this.idEquipamento));
         model.setRequisitante(new Requisitante(this.idRequisitante));
         model.setItens(ofNullable(this.itens)
                 .orElse(emptyList())
@@ -48,7 +43,7 @@ public record RequisicaoDeEstoqueDTO(
         model.setDataRequisicao(this.dataRequisicao);
         model.setObs(this.obs);
         model.setOrdemProducao(this.ordemProducao);
-        model.setEquipamento(new Equipamento(this.idLocalDeAplicacao));
+        model.setEquipamento(new Equipamento(this.idEquipamento));
         model.setRequisitante(new Requisitante(this.idRequisitante));
         model.setItens(ofNullable(this.itens)
                 .orElse(emptyList())

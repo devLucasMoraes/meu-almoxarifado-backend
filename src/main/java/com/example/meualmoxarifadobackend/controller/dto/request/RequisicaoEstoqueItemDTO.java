@@ -10,12 +10,10 @@ import java.math.BigDecimal;
 
 public record RequisicaoEstoqueItemDTO(
         Long idItem,
-        @NotNull
-        Long idInsumo,
-        @NotNull
-        Unidade undConsumo,
-        @Positive(message = "deve ser maior que zero")
-        BigDecimal quantEntregue) {
+        @NotNull Long idInsumo,
+        @NotNull Unidade undConsumo,
+        @Positive(message = "deve ser maior que zero") BigDecimal quantEntregue
+) {
     public RequisicaoEstoqueItem toModel() {
         RequisicaoEstoqueItem model = new RequisicaoEstoqueItem();
         model.setId(this.idItem);

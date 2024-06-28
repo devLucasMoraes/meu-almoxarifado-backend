@@ -7,10 +7,11 @@ import java.math.BigDecimal;
 
 public record ShowRequisicaoEstoqueItemDTO(
         Long idItem,
-        Long idMaterial,
+        Long idInsumo,
         Unidade undConsumo,
         BigDecimal quantEntregue,
-        BigDecimal valorUntEntregue) {
+        BigDecimal valorUntEntregue
+) {
     public ShowRequisicaoEstoqueItemDTO(RequisicaoEstoqueItem model) {
         this(
                 model.getId(),

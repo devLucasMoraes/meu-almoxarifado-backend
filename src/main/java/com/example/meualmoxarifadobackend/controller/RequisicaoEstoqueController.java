@@ -1,8 +1,8 @@
 package com.example.meualmoxarifadobackend.controller;
 
 
-import com.example.meualmoxarifadobackend.controller.dto.request.RequisicaoDeEstoqueDTO;
-import com.example.meualmoxarifadobackend.controller.dto.response.ShowRequisicaoDeEstoqueDTO;
+import com.example.meualmoxarifadobackend.controller.dto.request.RequisicaoEstoqueDTO;
+import com.example.meualmoxarifadobackend.controller.dto.response.ShowRequisicaoEstoqueDTO;
 import com.example.meualmoxarifadobackend.service.RequisicaoEstoqueService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -14,38 +14,38 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("api/requisicoes")
+@RequestMapping("api/requisicoes-estoque")
 @CrossOrigin
 public record RequisicaoEstoqueController(RequisicaoEstoqueService requisicaoEstoqueService) {
 
 
     @PostMapping("create")
-    public ResponseEntity<ShowRequisicaoDeEstoqueDTO> create(@RequestBody @Valid RequisicaoDeEstoqueDTO requisicaoDeEstoqueDTO) {
-        var requisicaoDeEstoque = requisicaoEstoqueService.create(requisicaoDeEstoqueDTO.toNewModel());
+    public ResponseEntity<ShowRequisicaoEstoqueDTO> create(@RequestBody @Valid RequisicaoEstoqueDTO requisicaoEstoqueDTO) {
+        var requisicaoDeEstoque = requisicaoEstoqueService.create(requisicaoEstoqueDTO.toNewModel());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(requisicaoDeEstoque.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(new ShowRequisicaoDeEstoqueDTO(requisicaoDeEstoque));
+        return ResponseEntity.created(location).body(new ShowRequisicaoEstoqueDTO(requisicaoDeEstoque));
     }
 
     @GetMapping
-    public ResponseEntity<Page<ShowRequisicaoDeEstoqueDTO>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<ShowRequisicaoEstoqueDTO>> getAll(Pageable pageable) {
         var requisicoesDeEstoque = requisicaoEstoqueService.findAll(pageable);
-        var requisicoesDeEstoqueDTO = requisicoesDeEstoque.map(ShowRequisicaoDeEstoqueDTO::new);
+        var requisicoesDeEstoqueDTO = requisicoesDeEstoque.map(ShowRequisicaoEstoqueDTO::new);
         return ResponseEntity.ok(requisicoesDeEstoqueDTO);
     }
 
     @GetMapping("show/{id}")
-    public ResponseEntity<ShowRequisicaoDeEstoqueDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<ShowRequisicaoEstoqueDTO> getById(@PathVariable Long id) {
         var requisicaoDeEstoque = requisicaoEstoqueService.findById(id);
-        return ResponseEntity.ok(new ShowRequisicaoDeEstoqueDTO(requisicaoDeEstoque));
+        return ResponseEntity.ok(new ShowRequisicaoEstoqueDTO(requisicaoDeEstoque));
     }
 
     @PutMapping("edit/{id}")
-    public ResponseEntity<ShowRequisicaoDeEstoqueDTO> updateById(@PathVariable Long id, @RequestBody @Valid RequisicaoDeEstoqueDTO requisicaoDeEstoqueDTO) {
-        var requisicaoDeEstoque = requisicaoEstoqueService.update(id, requisicaoDeEstoqueDTO.toModel());
-        return ResponseEntity.ok(new ShowRequisicaoDeEstoqueDTO(requisicaoDeEstoque));
+    public ResponseEntity<ShowRequisicaoEstoqueDTO> updateById(@PathVariable Long id, @RequestBody @Valid RequisicaoEstoqueDTO requisicaoEstoqueDTO) {
+        var requisicaoDeEstoque = requisicaoEstoqueService.update(id, requisicaoEstoqueDTO.toModel());
+        return ResponseEntity.ok(new ShowRequisicaoEstoqueDTO(requisicaoDeEstoque));
     }
 
     @DeleteMapping("delete/{id}")
