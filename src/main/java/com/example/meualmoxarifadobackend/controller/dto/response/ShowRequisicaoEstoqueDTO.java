@@ -18,6 +18,8 @@ public record ShowRequisicaoEstoqueDTO(
         String ordemProducao,
         Long idRequisitante,
         Long idEquipamento,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
         List<ShowRequisicaoEstoqueItemDTO> itens
 ) {
     public ShowRequisicaoEstoqueDTO(RequisicaoEstoque model) {
@@ -29,6 +31,8 @@ public record ShowRequisicaoEstoqueDTO(
                 model.getObs(),
                 model.getRequisitante().getId(),
                 model.getEquipamento().getId(),
+                model.getCreatedAt(),
+                model.getUpdatedAt(),
                 ofNullable(model.getItens()).orElse(emptyList()).stream().map(ShowRequisicaoEstoqueItemDTO::new).collect(toList())
         );
     }
