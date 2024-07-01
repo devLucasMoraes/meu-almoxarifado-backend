@@ -10,11 +10,10 @@ import com.example.meualmoxarifadobackend.service.EquipamentoService;
 import com.example.meualmoxarifadobackend.service.InsumoService;
 import com.example.meualmoxarifadobackend.service.RequisitanteService;
 import jakarta.annotation.PostConstruct;
-
-import java.math.BigDecimal;
-
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 @Component
 @Profile("dev")
@@ -54,7 +53,7 @@ public class PopulaDadosIniciais {
         InsumoDTO vernizUv = new InsumoDTO(
                 null,
                 "VERNIZ UV-8010/11 CALANDRA BRILHO",
-                new BigDecimal(0),
+                new BigDecimal(5),
                 false,
                 Unidade.KG,
                 new BigDecimal(30),
@@ -64,7 +63,7 @@ public class PopulaDadosIniciais {
         InsumoDTO ipa7030 = new InsumoDTO(
                 null,
                 "IPA 70/30",
-                new BigDecimal(0),
+                new BigDecimal(5),
                 false,
                 Unidade.LITRO,
                 new BigDecimal(150),

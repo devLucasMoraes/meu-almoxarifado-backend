@@ -7,14 +7,14 @@ import com.example.meualmoxarifadobackend.service.CategoriaService;
 import com.example.meualmoxarifadobackend.service.InsumoService;
 import com.example.meualmoxarifadobackend.service.exception.BusinessException;
 import com.example.meualmoxarifadobackend.service.exception.NotFoundException;
-
-import java.time.LocalDateTime;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Service
 public class InsumoServiceImpl implements InsumoService {
@@ -93,6 +93,22 @@ public class InsumoServiceImpl implements InsumoService {
     public void delete(Long id) {
         Insumo dbInsumo = this.findById(id);
         this.insumoRepository.delete(dbInsumo);
+    }
+
+    @Transactional
+    public void incrementTotalSaidas(BigDecimal value, Insumo insumo) {
+        Insumo dbInsumo = this.findById(insumo.getId());
+        var totalSadaAtual = dbInsumo.getTotalSaidas();
+        dbInsumo.setTotalSaidas(totalSadaAtual.add(value));
+        this.insumoRepository.save(dbInsumo);
+    }
+
+    @Transactional
+    public void decrementTotalSaidas(BigDecimal value, Insumo insumo) {
+        Insumo dbInsumo = this.findById(insumo.getId());
+        var totalSadaAtual = dbInsumo.getTotalSaidas();
+        dbInsumo.setTotalSaidas(totalSadaAtual.subtract(value));
+        this.insumoRepository.save(dbInsumo);
     }
 
     public Boolean existsById(Long id) {

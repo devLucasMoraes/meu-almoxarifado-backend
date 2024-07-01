@@ -1,9 +1,12 @@
 package com.example.meualmoxarifadobackend.service.impl;
 
-import com.example.meualmoxarifadobackend.domain.model.RequisicaoEstoqueItem;
 import com.example.meualmoxarifadobackend.domain.model.RequisicaoEstoque;
+import com.example.meualmoxarifadobackend.domain.model.RequisicaoEstoqueItem;
 import com.example.meualmoxarifadobackend.domain.repository.RequisicaoEstoqueRepository;
-import com.example.meualmoxarifadobackend.service.*;
+import com.example.meualmoxarifadobackend.service.EquipamentoService;
+import com.example.meualmoxarifadobackend.service.InsumoService;
+import com.example.meualmoxarifadobackend.service.RequisicaoEstoqueService;
+import com.example.meualmoxarifadobackend.service.RequisitanteService;
 import com.example.meualmoxarifadobackend.service.exception.BusinessException;
 import com.example.meualmoxarifadobackend.service.exception.NotFoundException;
 import org.springframework.data.domain.Page;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Service
 public class RequisicaoEstoqueServiceImpl implements RequisicaoEstoqueService {
@@ -58,17 +62,31 @@ public class RequisicaoEstoqueServiceImpl implements RequisicaoEstoqueService {
             throw new NotFoundException("Equipamento");
         }
 
-        requisicaoToCreate.getItens().forEach(itemRequisicao -> {
-            if (!this.insumoService.existsById(itemRequisicao.getInsumo().getId())) {
+        requisicaoToCreate.getItens().forEach(itemToCreate -> {
+            if (!this.insumoService.existsById(itemToCreate.getInsumo().getId())) {
                 throw new NotFoundException("Insumo");
             }
 
-            itemRequisicao.setRequisicaoEstoque(requisicaoToCreate);
+            var insumo = this.insumoService.findById(itemToCreate.getInsumo().getId());
+
+            if (!itemToCreate.getUnidade().equals(insumo.getUndEstoque())) {
+                throw new BusinessException("Unidade de Consumo tem que ser igual unidade de estoque");
+            }
+
+            itemToCreate.setRequisicaoEstoque(requisicaoToCreate);
+            itemToCreate.setValorUnitario(insumo.getValorUntMed());
+
+            this.insumoService.incrementTotalSaidas(itemToCreate.getQuantidade(), insumo);
 
         });
 
-        BigDecimal valorTotalItens = requisicaoToCreate.getItens().stream().map(RequisicaoEstoqueItem::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal valorTotalItens = requisicaoToCreate.getItens().stream()
+                .map(RequisicaoEstoqueItem::getValorTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         requisicaoToCreate.setValorTotal(valorTotalItens);
+        requisicaoToCreate.setCreatedAt(LocalDateTime.now());
+        requisicaoToCreate.setUpdatedAt(LocalDateTime.now());
 
         return this.requisicaoEstoqueRepository.save(requisicaoToCreate);
     }
@@ -89,16 +107,37 @@ public class RequisicaoEstoqueServiceImpl implements RequisicaoEstoqueService {
             throw new NotFoundException("Equipamento");
         }
 
-        requisicaoToUpdate.getItens().forEach(itemRequisicao -> {
-            if (!this.insumoService.existsById(itemRequisicao.getInsumo().getId())) {
-                throw new NotFoundException("Material");
+        requisicaoToUpdate.getItens().forEach(itemToUpdate -> {
+            if (!this.insumoService.existsById(itemToUpdate.getInsumo().getId())) {
+                throw new NotFoundException("Insumo");
             }
 
-            itemRequisicao.setRequisicaoEstoque(requisicaoToUpdate);
+            var insumo = this.insumoService.findById(itemToUpdate.getInsumo().getId());
+
+            if (!itemToUpdate.getUnidade().equals(insumo.getUndEstoque())) {
+                throw new BusinessException("Unidade de consumo tem que ser igual unidade de estoque.");
+            }
+
+            var oldQuantidade = dbRequisicaoEstoque.getItens().stream()
+                    .filter(requisicaoEstoqueItem -> requisicaoEstoqueItem.getId().equals(itemToUpdate.getId()))
+                    .findFirst()
+                    .map(RequisicaoEstoqueItem::getQuantidade)
+                    .orElse(BigDecimal.ZERO);
+
+            var quamtidadeToUpdate = itemToUpdate.getQuantidade().subtract(oldQuantidade);
+
+
+            itemToUpdate.setRequisicaoEstoque(requisicaoToUpdate);
+            itemToUpdate.setValorUnitario(insumo.getValorUntMed());
+
+            this.insumoService.incrementTotalSaidas(quamtidadeToUpdate, insumo);
+
 
         });
 
-        BigDecimal valorTotalItens = requisicaoToUpdate.getItens().stream().map(RequisicaoEstoqueItem::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal valorTotalItens = requisicaoToUpdate.getItens().stream()
+                .map(RequisicaoEstoqueItem::getValorTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         dbRequisicaoEstoque.setObs(requisicaoToUpdate.getObs());
         dbRequisicaoEstoque.setValorTotal(valorTotalItens);
@@ -108,6 +147,7 @@ public class RequisicaoEstoqueServiceImpl implements RequisicaoEstoqueService {
         dbRequisicaoEstoque.setOrdemProducao(requisicaoToUpdate.getOrdemProducao());
         dbRequisicaoEstoque.getItens().clear();
         dbRequisicaoEstoque.getItens().addAll(requisicaoToUpdate.getItens());
+        dbRequisicaoEstoque.setUpdatedAt(LocalDateTime.now());
 
         return this.requisicaoEstoqueRepository.save(dbRequisicaoEstoque);
     }
@@ -116,6 +156,14 @@ public class RequisicaoEstoqueServiceImpl implements RequisicaoEstoqueService {
     public void delete(Long id) {
 
         RequisicaoEstoque dbRequisicaoEstoque = this.findById(id);
+
+        dbRequisicaoEstoque.getItens().forEach(itemToDelete -> {
+
+            var insumo = this.insumoService.findById(itemToDelete.getInsumo().getId());
+
+            this.insumoService.decrementTotalSaidas(itemToDelete.getQuantidade(), insumo);
+
+        });
 
         this.requisicaoEstoqueRepository.delete(dbRequisicaoEstoque);
 
