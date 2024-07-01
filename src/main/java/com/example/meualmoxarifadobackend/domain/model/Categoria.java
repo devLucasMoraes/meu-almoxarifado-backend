@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-
 @Entity
 @Table(name = "categorias")
 @Getter
@@ -19,13 +18,13 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "nome")
+    @Column(name = "nome", nullable = false, unique = true)
     private String nome;
 
-    @JoinColumn(name = "created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @JoinColumn(name = "updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     public Categoria(Long idCategoria) {

@@ -1,6 +1,5 @@
 package com.example.meualmoxarifadobackend.domain.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,36 +20,36 @@ public class Insumo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "descricao")
+    @Column(name = "descricao", nullable = false, unique = true)
     private String descricao;
 
-    @JoinColumn(name = "valor_unt_med")
+    @Column(name = "valor_unt_med", nullable = false)
     private BigDecimal valorUntMed = BigDecimal.ZERO;
 
-    @JoinColumn(name = "valor_unt_med_auto")
+    @Column(name = "valor_unt_med_auto", nullable = false)
     private Boolean valorUntMedAuto = false;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "und_estoque")
+    @JoinColumn(name = "und_estoque", nullable = false)
     private Unidade undEstoque;
 
-    @JoinColumn(name = "estoque_minimo")
+    @Column(name = "estoque_minimo", nullable = false)
     private BigDecimal estoqueMinimo;
 
-    @JoinColumn(name = "total_entradas")
+    @Column(name = "total_entradas", nullable = false)
     private BigDecimal totalEntradas = BigDecimal.ZERO;
 
-    @JoinColumn(name = "total_saidas")
+    @Column(name = "total_saidas", nullable = false)
     private BigDecimal totalSaidas = BigDecimal.ZERO;
 
-    @JoinColumn(name = "created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @JoinColumn(name = "updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "categorias_id")
+    @JoinColumn(name = "categorias_id", nullable = false)
     private Categoria categoria;
 
     public Insumo(Long idInsumo) {

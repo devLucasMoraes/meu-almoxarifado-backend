@@ -1,6 +1,5 @@
 package com.example.meualmoxarifadobackend.domain.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,22 +20,22 @@ public class RequisicaoEstoque {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "data_requisicao")
+    @Column(name = "data_requisicao")
     private LocalDateTime dataRequisicao;
 
-    @JoinColumn(name = "valor_total")
+    @Column(name = "valor_total")
     private BigDecimal valorTotal = BigDecimal.ZERO;
 
-    @JoinColumn(name = "ordem_producao")
+    @Column(name = "ordem_producao")
     private String ordemProducao;
 
-    @JoinColumn(name = "obs")
+    @Column(name = "obs")
     private String obs;
 
-    @JoinColumn(name = "created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @JoinColumn(name = "updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)

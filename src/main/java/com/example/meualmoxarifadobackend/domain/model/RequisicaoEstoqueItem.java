@@ -14,7 +14,7 @@ import lombok.*;
 public class RequisicaoEstoqueItem extends BaseItem{
 
     @ManyToOne
-    @JoinColumn(name = "requisicoes_estoque_id")
+    @JoinColumn(name = "requisicoes_estoque_id", nullable = false)
     private RequisicaoEstoque requisicaoEstoque;
 
 }

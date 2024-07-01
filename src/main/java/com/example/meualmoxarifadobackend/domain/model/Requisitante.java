@@ -1,6 +1,5 @@
 package com.example.meualmoxarifadobackend.domain.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,16 +18,16 @@ public class Requisitante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "nome")
+    @Column(name = "nome", nullable = false, unique = true)
     private String nome;
 
-    @JoinColumn(name = "fone")
+    @Column(name = "fone")
     private String fone;
 
-    @JoinColumn(name = "created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @JoinColumn(name = "updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     public Requisitante(Long id) {

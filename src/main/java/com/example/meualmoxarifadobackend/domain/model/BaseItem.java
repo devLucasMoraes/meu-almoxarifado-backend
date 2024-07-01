@@ -15,17 +15,17 @@ public class BaseItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "insumos_id")
+    @JoinColumn(name = "insumos_id", nullable = false)
     private Insumo insumo;
 
-    @JoinColumn(name = "quantidade")
+    @Column(name = "quantidade", nullable = false)
     private BigDecimal quantidade;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "unidade")
+    @JoinColumn(name = "unidade", nullable = false)
     private Unidade unidade;
 
-    @JoinColumn(name = "valor_unitario")
+    @Column(name = "valor_unitario", nullable = false)
     private BigDecimal valorUnitario = BigDecimal.ZERO;
 
     public BigDecimal getValorTotal() {
